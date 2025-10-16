@@ -1,5 +1,5 @@
 let palabra = document.querySelector('p')
-let letra
+let letra = document.querySelectorAll('input')
 let button = document.querySelector('button')
 let palabraRandom
 let aciertos
@@ -16,23 +16,22 @@ fetch('https://rae-api.com/api/random?min_length=5&max_length=5')
 
 button.onclick = function () {
     aciertos = 0
-    letra = document.querySelectorAll('input')
-    
-   
+
     let filaCompleta = true
-    for (let i = inicio; i < fin; index++) {
-        if (letra[i].value) {
+    for (let i = inicio; i < fin; i++) { 
+        if (!letra[i].value) {  
             filaCompleta = false
             break
         }
     }
     
-    if (filaCompleta) {
+    if (!filaCompleta) {  
         alert('Completa todas las letras')
         return
     }
     
-    for (let i = inicio; i < Array.lenght; index++) {
+   
+    for (let i = inicio; i < fin; i++) { 
         let valorLetra = letra[i].value.toLowerCase()
         if (valorLetra == palabraRandom[i - inicio]) {
             letra[i].style.backgroundColor = 'green'
@@ -45,19 +44,20 @@ button.onclick = function () {
         letra[i].disabled = true 
     }
     
+  
     if (aciertos == 5) {
-        alert(`Ganaste La palabra era ${palabraRandom}`)
+        alert(`Ganaste! La palabra era ${palabraRandom}`)
         button.disabled = true
     } else {
         inicio += 5
         fin += 5
         
-       
+        
         if (fin > letra.length) {
             alert(`Perdiste. La palabra era ${palabraRandom}`)
             button.disabled = true
         } else {
-           
+            
             for (let i = inicio; i < fin; i++) {
                 letra[i].disabled = false
             }
