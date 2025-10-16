@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wordle - Juego de Palabras</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .header {
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            color: #1a1a1a;
+            font-size: 2.5rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tuto {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            border: 1px solid #e0e0e0;
+        }
+
+        .tuto h3 {
+            font-size: 1rem;
+            color: #1a1a1a;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .tuto p {
+            display: block;
+            color: #6e6e6e;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .descp {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .descp-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: #1a1a1a;
+        }
+
+        .color-box {
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .green { background-color: #6aaa64; }
+        .yellow { background-color: #c9b458; }
+        .grey { background-color: #787c7e; }
+
+        .contenedor {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            width: 100%;
+        }
+
+        .row {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 5px;
+            justify-content: center;
+        }
+
+        input {
+            width: 62px;
+            height: 62px;
+            text-align: center;
+            font-size: 2rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 2px solid #d3d6da;
+            background-color: #ffffff;
+            color: #1a1a1a;
+            transition: border-color 0.1s ease;
+            caret-color: #1a1a1a;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #878a8c;
+        }
+
+        input:disabled {
+            cursor: not-allowed;
+            border-color: transparent;
+        }
+
+        input[style*="green"] {
+            background-color: #6aaa64 !important;
+            color: white;
+            border-color: #6aaa64;
+        }
+
+        input[style*="yellow"] {
+            background-color: #c9b458 !important;
+            color: white;
+            border-color: #c9b458;
+        }
+
+        input[style*="grey"] {
+            background-color: #787c7e !important;
+            color: white;
+            border-color: #787c7e;
+        }
+
+        button {
+            background-color: #6aaa64;
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            letter-spacing: 0.5px;
+        }
+
+        button:hover:not(:disabled) {
+            background-color: #5a9a54;
+        }
+
+        button:disabled {
+            background-color: #d3d6da;
+            cursor: not-allowed;
+        }
+
+        p {
+            display: none;
+        }
+
+        @media (max-width: 500px) {
+            input {
+                width: 52px;
+                height: 52px;
+                font-size: 1.5rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Wordle</h1>
+    </div>
+    
+    <div class="container">
+        <div class="tuto">
+            <h3>Cómo jugar</h3>
+            <p>Adivina la palabra de 5 letras en 5 intentos. Después de cada intento, el color de las casillas cambiará para mostrar qué tan cerca estás de la solución.</p>
+            <div class="descp">
+                <div class="descp-item">
+                    <div class="color-box green">A</div>
+                    <span>La letra está en la palabra y en la posición correcta</span>
+                </div>
+                <div class="descp-item">
+                    <div class="color-box yellow">E</div>
+                    <span>La letra está en la palabra pero en la posición incorrecta</span>
+                </div>
+                <div class="descp-item">
+                    <div class="color-box grey">I</div>
+                    <span>La letra no está en la palabra</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="contenedor">
+            <div class="row">
+                <input type="text" maxlength="1" autocomplete="off">
+                <input type="text" maxlength="1" autocomplete="off">
+                <input type="text" maxlength="1" autocomplete="off">
+                <input type="text" maxlength="1" autocomplete="off">
+                <input type="text" maxlength="1" autocomplete="off">
+            </div>
+            <div class="row">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+            </div>
+            <div class="row">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+            </div>
+            <div class="row">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+            </div>
+            <div class="row">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+                <input type="text" maxlength="1" disabled autocomplete="off">
+            </div>
+        </div>
+
+        <button>Verificar</button>
+    </div>
+
+    <p>La palabra es: </p>
+
+    <script>
